@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>{% if employee %}Edit Employee{% else %}Add Employee{% endif %}</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label>Employee ID</label>
+        <input type="text" name="employee_id" class="form-control" value="{{ employee.employee_id|default:'' }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control" value="{{ employee.name|default:'' }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" value="{{ employee.email|default:'' }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Department</label>
+        <input type="text" name="department" class="form-control" value="{{ employee.department|default:'' }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Mobile Number</label>
+        <input type="text" name="mobile_number" class="form-control" value="{{ employee.mobile_number|default:'' }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Date of Joining</label>
+        <input type="date" name="date_of_joining" class="form-control" value="{{ employee.date_of_joining|date:'Y-m-d'|default:'' }}" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'employee_list' %}" class="btn btn-secondary">Cancel</a>
+
+    <div class="mb-3">
+    <label class="form-label">Link to User Account (for login)</label>
+    <select name="user" class="form-select">
+        <option value="">-- No login account --</option>
+        {% for u in users %}
+        <option value="{{ u.id }}" {% if employee.user_id == u.id %}selected{% endif %}>{{ u.username }}</option>
+        {% endfor %}
+    </select>
+</div>
+</form>
+
+{% endblock %}

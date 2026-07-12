@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Employee List</h2>
+
+<a href="{% url 'employee_add' %}" class="btn btn-primary mb-3">+ Add Employee</a>
+
+<form method="get" class="mb-3">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search by name..." class="form-control d-inline w-auto">
+    <button type="submit" class="btn btn-secondary">Search</button>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Mobile</th>
+            <th>Date of Joining</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.employee_id }}</td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.department }}</td>
+            <td>{{ employee.mobile_number }}</td>
+            <td>{{ employee.date_of_joining }}</td>
+            <td>
+                <a href="{% url 'employee_edit' employee.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{% url 'employee_delete' employee.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7">No employees found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

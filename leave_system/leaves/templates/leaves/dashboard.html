@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="fw-bold" style="color:#1b2a4a;">Dashboard</h2>
+<p class="text-muted">Track and manage all leave applications</p>
+
+<div class="row mt-4 g-3">
+    <div class="col-md-2">
+        <div class="stat-card" style="background: linear-gradient(135deg,#1b2a4a,#2f7bb8);">
+            <h6>Total Employees</h6>
+            <h2>{{ total_employees }}</h2>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="stat-card" style="background: linear-gradient(135deg,#0d6efd,#4dabf7);">
+            <h6>Total Leaves</h6>
+            <h2>{{ total_leaves }}</h2>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="stat-card" style="background: linear-gradient(135deg,#f76707,#ffa94d);">
+            <h6>Pending</h6>
+            <h2>{{ pending }}</h2>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="stat-card" style="background: linear-gradient(135deg,#2b8a3e,#40c057);">
+            <h6>Approved</h6>
+            <h2>{{ approved }}</h2>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="stat-card" style="background: linear-gradient(135deg,#c92a2a,#fa5252);">
+            <h6>Rejected</h6>
+            <h2>{{ rejected }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'leave_list' %}" class="btn btn-primary"><i class="bi bi-file-earmark-text me-1"></i> View All Leaves</a>
+    <a href="{% url 'employee_list' %}" class="btn btn-outline-primary"><i class="bi bi-people me-1"></i> View Employees</a>
+</div>
+
+{% endblock %}

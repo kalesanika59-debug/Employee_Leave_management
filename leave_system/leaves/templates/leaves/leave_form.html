@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>{% if leave %}Edit Leave{% else %}Apply Leave{% endif %}</h2>
+
+{% if error %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    {% if is_hr %}
+    <div class="mb-3">
+        <label>Employee</label>
+        <select name="employee" class="form-select" required>
+            <option value="">-- Select Employee --</option>
+            {% for emp in employees %}
+            <option value="{{ emp.pk }}" {% if leave.employee.pk == emp.pk %}selected{% endif %}>
+                {{ emp.employee_id }} - {{ emp.name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    {% endif %}
+
+    <div class="mb-3">
+        <label>Leave Type</label>
+        <select name="leave_type" class="form-select" required>
+            <option value="Casual" {% if leave.leave_type == 'Casual' %}selected{% endif %}>Casual</option>
+            <option value="Sick" {% if leave.leave_type == 'Sick' %}selected{% endif %}>Sick</option>
+            <option value="Earned" {% if leave.leave_type == 'Earned' %}selected{% endif %}>Earned</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>From Date</label>
+        <input type="date" name="from_date" class="form-control" value="{{ leave.from_date|date:'Y-m-d'|default:'' }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label>To Date</label>
+        <input type="date" name="to_date" class="form-control" value="{{ leave.to_date|date:'Y-m-d'|default:'' }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Reason</label>
+        <textarea name="reason" class="form-control" required>{{ leave.reason|default:'' }}</textarea>
+    </div>
+
+    {% if leave and is_hr %}
+    <div class="mb-3">
+        <label>Status</label>
+        <select name="status" class="form-select">
+            <option value="Pending" {% if leave.status == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="Approved" {% if leave.status == 'Approved' %}selected{% endif %}>Approved</option>
+            <option value="Rejected" {% if leave.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+        </select>
+    </div>
+    {% endif %}
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'leave_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>My Dashboard</h2>
+
+{% if employee %}
+<p class="text-muted">Welcome, <strong>{{ employee.name }}</strong> ({{ employee.employee_id }})</p>
+
+<div class="row mt-3 mb-4">
+    <div class="col-md-3">
+        <div class="card p-3">
+            <small class="text-muted">Department</small>
+            <h5>{{ employee.department }}</h5>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3">
+            <small class="text-muted">Date of Joining</small>
+            <h5>{{ employee.date_of_joining }}</h5>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3">
+            <small class="text-muted">Total Leaves Applied</small>
+            <h5>{{ leaves|length }}</h5>
+        </div>
+    </div>
+</div>
+
+<h5>My Leave History</h5>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Leave Type</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Reason</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for leave in leaves %}
+        <tr>
+            <td>{{ leave.leave_type }}</td>
+            <td>{{ leave.from_date }}</td>
+            <td>{{ leave.to_date }}</td>
+            <td>{{ leave.reason }}</td>
+            <td>
+                {% if leave.status == 'Approved' %}
+                <span class="badge bg-success">Approved</span>
+                {% elif leave.status == 'Rejected' %}
+                <span class="badge bg-danger">Rejected</span>
+                {% else %}
+                <span class="badge bg-warning text-dark">Pending</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No leave records yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'leave_add' %}" class="btn btn-primary">+ Apply for Leave</a>
+
+{% else %}
+<div class="alert alert-warning">
+    Your account is not linked to any employee profile. Please contact HR.
+</div>
+{% endif %}
+
+{% endblock %}
